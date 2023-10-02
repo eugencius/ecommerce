@@ -29,6 +29,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["localhost"]
 
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 ROOT_URLCONF = "CORE.urls"
 
