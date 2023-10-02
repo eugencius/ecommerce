@@ -20,7 +20,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(verbose_name=_("Updated at"), auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.slug:
