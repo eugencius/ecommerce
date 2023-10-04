@@ -21,8 +21,8 @@ TEMPLATES = [
 
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
-STATICFILES_DIR = [BASE_DIR / "templates/static"]
+STATICFILES_DIRS = [BASE_DIR / "templates/static"]
 
 # Images configuration
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media/images/"
+MEDIA_ROOT = BASE_DIR / "media/"
