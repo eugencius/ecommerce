@@ -190,6 +190,7 @@ cython_debug/
 
 # Django stuff:
 **/migrations/**
+locale/**
 
 # Flask stuff:
 
