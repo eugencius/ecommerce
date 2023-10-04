@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load ecfilters %}
 {% load i18n %}
 
 {% block title %}Home | {% endblock title %}
@@ -11,23 +12,35 @@
 <section class="py-5">
   <div class="container px-4 px-lg-5 mt-5">
     <div
-      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+    class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
     >
+    {% for product in products %}
       <div class="col mb-5">
         <div class="card h-100">
           <!-- Product image-->
           <img
             class="card-img-top"
-            src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-            alt="..."
+            src={{ product.cover.url }}
+            alt={{ product.name }}
           />
           <!-- Product details-->
           <div class="card-body p-4">
             <div class="text-center">
-              <!-- Product name-->
-              <h5 class="fw-bolder">Fancy Product</h5>
-              <!-- Product price-->
-              $40.00 - $80.00
+              <div>
+                <h5 class="fw-bolder mb-0">{{ product.name }}</h5>
+                <p class="short-description">{{ product.short_description }}</p>
+              </div>
+              
+              {% if product.promotional_price %}
+              <div>
+                <p class="text-decoration-line-through text-muted mb-0" style="font-size: 0.75rem;">{{ product.price|format_currency_template }}</p>
+                {{ product.promotional_price|format_currency_template }}
+              </div>
+
+              {% else %}
+                {{ product.price|format_currency_template }}    
+              {% endif %}
+              
             </div>
           </div>
           <!-- Product actions-->
@@ -38,6 +51,7 @@
           </div>
         </div>
       </div>
+      {% endfor %}
       </div>
     </div>
 </section>
