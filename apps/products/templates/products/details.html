@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load ecfilters %}
+{% load i18n %}
 
 
 {% block title %}{{ product.name }} | {% endblock title %} 
@@ -37,7 +38,7 @@
           />
           <button class="btn btn-outline-dark flex-shrink-0" type="button">
             <i class="bi-cart-fill me-1"></i>
-            Add to cart
+            {% translate "Add to cart" %}
           </button>
         </div>
       </div>
@@ -116,7 +117,7 @@
           <!-- Product actions-->
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div class="text-center">
-              <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+              <a class="btn btn-outline-dark mt-auto" href="#">{% translate "Add to cart" %}</a>
             </div>
           </div>
         </div>
@@ -151,7 +152,7 @@
           <!-- Product actions-->
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div class="text-center">
-              <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+              <a class="btn btn-outline-dark mt-auto" href="#">{% translate "Add to cart" %}</a>
             </div>
           </div>
         </div>
@@ -186,7 +187,7 @@
           <!-- Product actions-->
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div class="text-center">
-              <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+              <a class="btn btn-outline-dark mt-auto" href="#">{% translate "Add to cart" %}</a>
             </div>
           </div>
         </div>
