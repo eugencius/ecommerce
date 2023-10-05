@@ -7,7 +7,7 @@ from utils.functions import resize_image
 
 class Product(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=64)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, unique=True)
     short_description = models.CharField(
         verbose_name=_("Short description"), max_length=128
     )
