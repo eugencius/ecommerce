@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from .models import Product
 
@@ -13,3 +13,10 @@ class Index(ListView):
         qs = super().get_queryset()
         qs = qs.order_by("-id").filter(is_published=True)
         return qs
+
+
+class Details(DetailView):
+    model = Product
+    template_name = "products/details.html"
+    context_object_name = "product"
+    slug_url_kwarg = "slug"
