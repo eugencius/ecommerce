@@ -68,3 +68,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Sessions (Must be in seconds, this is the formula for one week)
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+
+# Messages
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-warning",
+    messages.ERROR: "alert-danger",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+}
