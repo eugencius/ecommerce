@@ -1,4 +1,5 @@
 from django import template
+from django.utils.translation import gettext as _
 
 from utils import functions
 
@@ -18,3 +19,8 @@ def count_cart_items(cart):
 @register.filter(name="cart_total_price")
 def cart_total_price(cart):
     return functions.cart_total_price(cart)
+
+
+@register.filter(name="translate_category")
+def translate_category(name):
+    return str(_(name))

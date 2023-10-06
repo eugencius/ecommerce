@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product
+from .models import Category, Product
 
 
 @admin.register(Product)
@@ -11,6 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
         "slug",
         "price",
         "promotional_price",
+        "category",
         "stock",
         "updated_at",
     )
@@ -22,6 +23,14 @@ class ProductAdmin(admin.ModelAdmin):
 
     list_per_page = 25
 
+    prepopulated_fields = {
+        "slug": ("name",),
+    }
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "slug")
     prepopulated_fields = {
         "slug": ("name",),
     }

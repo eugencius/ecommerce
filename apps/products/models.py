@@ -5,6 +5,25 @@ from django.utils.translation import gettext_lazy as _
 from utils.functions import resize_image
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    slug = models.SlugField(max_length=64, unique=True)
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.name)
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+
 class Product(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=64)
     slug = models.SlugField(blank=True, unique=True)
@@ -17,6 +36,7 @@ class Product(models.Model):
         verbose_name=_("Promotional price"), default=0
     )
     cover = models.ImageField(verbose_name=_("Cover"), upload_to="images/%Y/%m")
+    category = models.ForeignKey(Category, default=1, on_delete=models.SET_DEFAULT)
     stock = models.PositiveIntegerField(verbose_name=_("Stock"))
     is_published = models.BooleanField(verbose_name=_("Is published"), default=True)
     created_at = models.DateTimeField(verbose_name=_("Created at"), auto_now_add=True)

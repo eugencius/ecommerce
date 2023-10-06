@@ -2,6 +2,7 @@ import json
 
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
 
 from templates.static import messages as notifications
@@ -60,6 +61,7 @@ class ProductToCart(View):
                 "quant_price": product.price,
                 "quant_promotional_price": product.promotional_price,
                 "cover": product.cover.url,
+                "category": product.category.name,
                 "quantity": 1,
             }
 
