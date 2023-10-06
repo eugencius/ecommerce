@@ -20,7 +20,7 @@
         <div class="card h-100">
           <a href="{% url "products:details" product.slug %}">
             {% if product.stock < 10 %}
-              <span class="badge text-bg-danger position-absolute top-0 end-0 m-1">Almost sold out!</span>
+              <span class="badge text-bg-danger position-absolute top-0 end-0 m-1">{% translate "Almost sold out!" %}</span>
             {% endif %}
             <img
               class="card-img-top"
