@@ -1,7 +1,10 @@
 import json
 
-from django.shortcuts import redirect
+from django.contrib import messages
+from django.shortcuts import redirect, render
 from django.views.generic import DetailView, ListView, View
+
+from templates.static import messages as notifications
 
 from .models import Product
 
@@ -23,6 +26,19 @@ class Details(DetailView):
     template_name = "products/details.html"
     context_object_name = "product"
     slug_url_kwarg = "slug"
+
+
+class Cart(View):
+    template_name = "products/cart.html"
+
+    def get(self, *args, **kwargs):
+        cart = self.request.session.get("cart")
+
+        context = {
+            "cart": cart.values(),
+        }
+
+        return render(self.request, self.template_name, context)
 
 
 class ProductToCart(View):
@@ -60,4 +76,9 @@ class ProductToCart(View):
             cart[pk].update(updated_values)
 
         self.request.session["cart"] = cart
+
+        messages.success(
+            self.request,
+            notifications.success["product-to-cart"],
+        )
         return redirect("products:details", product.slug)

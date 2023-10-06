@@ -29,3 +29,18 @@ def resize_image(image, new_width=800):
         optimize=True,
         quality=60,
     )
+
+
+def count_items_on_cart(cart):
+    return sum([i["quantity"] for i in cart])
+
+
+def cart_total_price(cart):
+    return sum(
+        [
+            i["quant_promotional_price"]
+            if i["quant_promotional_price"]
+            else i["quant_price"]
+            for i in cart
+        ]
+    )
