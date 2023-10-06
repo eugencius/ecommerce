@@ -10,6 +10,12 @@ Here is a list of what is presented in the project:
 - Lists to save products that you liked (Coming soon)
 - Payment gateway with PayPal (Coming soon)
 
+The base templates, like the home page and details of the product, were not made by me. You can access these following sites to get them:
+
+[Home Page](https://startbootstrap.com/template/shop-homepage) <br>
+[Details Page](https://startbootstrap.com/template/shop-item) <br>
+[Cart Page](https://mdbootstrap.com/docs/standard/extended/shopping-carts/)
+
 ---
 
 If you are a developer and wants to contribute with the project, or even wants to contribute with a constructive criticism, feel free to do it! Your message will be gently recepted by me and I'll appreciate your attention. In case that you wish to modify or implement your piece of code, you can follow the instructions:
