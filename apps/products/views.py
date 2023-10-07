@@ -1,6 +1,8 @@
 import json
+from typing import Any
 
 from django.contrib import messages
+from django.db import models
 from django.shortcuts import redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
@@ -27,6 +29,19 @@ class Details(DetailView):
     template_name = "products/details.html"
     context_object_name = "product"
     slug_url_kwarg = "slug"
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+
+        category = context["product"].category
+        related_products = Product.objects.filter(
+            category__exact=category, is_published=True
+        ).exclude(id=obj.id)
+
+        context["related_products"] = related_products
+
+        return context
 
 
 class Cart(View):
