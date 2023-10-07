@@ -1,0 +1,43 @@
+{% load i18n %}
+{% load ecfilters %}
+
+<div class="col mb-5">
+    <div class="card h-100">
+      <a href="{% url "products:details" product.slug %}">
+        {% if product.stock < 10 %}
+          <span class="badge text-bg-danger position-absolute top-0 end-0 m-1">{% translate "Almost sold out!" %}</span>
+        {% endif %}
+        <img
+          class="card-img-top"
+          src={{ product.cover.url }}
+          alt={{ product.name }}
+        />
+      </a>
+      <!-- Product details-->
+      <div class="card-body p-4">
+        <div class="text-center">
+          <div>
+            <h5 class="fw-bolder mb-0">{{ product.name }}</h5>
+            <p class="short-description">{{ product.short_description }}</p>
+          </div>
+          
+          {% if product.promotional_price %}
+          <div>
+            <p class="text-decoration-line-through text-muted mb-0" style="font-size: 0.75rem;">{{ product.price|format_currency_template }}</p>
+            {{ product.promotional_price|format_currency_template }}
+          </div>
+
+          {% else %}
+            {{ product.price|format_currency_template }}    
+          {% endif %}
+          
+        </div>
+      </div>
+      <!-- Product actions-->
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+          <a class="btn btn-outline-dark mt-auto" href="{% url "products:details" product.slug %}">{% translate "View details" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
