@@ -5,6 +5,9 @@
 {% block title %} {% translate "Cart"%} | {% endblock title %} 
 
 {% block content %}
+
+{% include "partials/_messages.html" %}
+
 <section class="h-100 h-custom">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -21,42 +24,66 @@
 
                   <hr class="my-4" />
 
-                  {% for item in cart %}
-                  <div class="row mb-4 d-flex justify-content-between align-items-center">
-                    <div class="col-md-2 col-lg-2 col-xl-2">
-                      <img
-                        src="{{ item.cover }}"
-                        class="img-fluid rounded-3"
-                        alt="{{ item.name }}"
-                      />
+                  {% if cart %}
+                    {% for item in cart %}
+                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <a href="{% url "products:details" item.slug %}">
+                          <img
+                            src="{{ item.cover }}"
+                            class="img-fluid rounded-3"
+                            alt="{{ item.name }}"
+                          />
+                        </a>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted">{{ item.category|translate_category }}</h6>
+                        <h6 class="text-black mb-0">{{ item.name }}</h6>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-2 text-center">
+                        <h6 class="text-muted">{% translate "Quantity" %}</h6>
+
+                        <form action="{% url "products:remove-from-cart" item.id %}" method="post" class="d-inline">
+                          {% csrf_token %}
+                          <button class="btn-no-decoration hover-red" type="submit">
+                            <i class="bi bi-dash-lg"></i>
+                          </button>
+                        </form>
+
+                        <span class="text-black ms-3 me-3">{{ item.quantity}}</span>
+
+                        <form action="{% url "products:to-cart" item.id %}" method="post" class="d-inline">
+                          {% csrf_token %}
+                          <button class="btn-no-decoration hover-red" type="submit">
+                            <i class="bi bi-plus-lg"></i>
+                          </button>
+                        </form>
+
+
+                      </div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 class="text-muted">{% translate "Price" %}</h6>
+                        <h6 class="mb-0">{{ item.quant_promotional_price|format_currency_template }}</h6>
+                      </div>
+                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <a href="#!" class="text-muted"
+                          ><i class="fas fa-times"></i
+                        ></a>
+                      </div>
                     </div>
-                    <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">{{ item.category|translate_category }}</h6>
-                      <h6 class="text-black mb-0">{{ item.name }}</h6>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-xl-2">
-                      <h6 class="text-muted">{% translate "Quantity" %}</h6>
-                      <h6 class="text-black mb-0">{{ item.quantity}}</h6>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                      <h6 class="text-muted">{% translate "Price" %}</h6>
-                      <h6 class="mb-0">{{ item.quant_promotional_price|format_currency_template }}</h6>
-                    </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="#!" class="text-muted"
-                        ><i class="fas fa-times"></i
-                      ></a>
-                    </div>
+                    <hr class="my-4" />
+                    {% endfor %}
+                  {% else %}
+                  <div class="mt-5">
+                    <h1> <i class="bi bi-cart-x"></i> {% translate "Your shopping cart is currently empty" %}.</h1>
+                    <p class="lead">{% translate "Search for the items you like most and put them on your cart to complete the purchase" %}!</p>
                   </div>
-                  <hr class="my-4" />
-                  {% endfor %}
+                  {% endif %}
 
                   <div class="pt-5">
                     <h6 class="mb-0">
-                      <a href="#!" class="text-body"
-                        ><i class="fas fa-long-arrow-alt-left me-2"></i>Back to
-                        shop</a
-                      >
+                      <a href="{% url "products:index" %}" class="text-body"
+                        ><i class="bi bi-arrow-left me-2"></i>{% translate "Back to shop" %}</a>
                     </h6>
                   </div>
                 </div>

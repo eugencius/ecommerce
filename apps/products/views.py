@@ -44,6 +44,8 @@ class Cart(View):
 
 class ProductToCart(View):
     def post(self, *args, **kwargs):
+        HTTP_REFERER = self.request.META.get("HTTP_REFERER")
+
         pk = self.kwargs.get("pk")
         product = Product.objects.get(pk=pk)
 
@@ -54,6 +56,7 @@ class ProductToCart(View):
 
         if pk not in cart.keys():
             cart[pk] = {
+                "id": pk,
                 "name": product.name,
                 "slug": product.slug,
                 "unit_price": product.price,
@@ -81,6 +84,37 @@ class ProductToCart(View):
 
         messages.success(
             self.request,
-            notifications.success["product-to-cart"],
+            notifications.success["product_to_cart"],
         )
-        return redirect("products:details", product.slug)
+        return redirect(HTTP_REFERER)
+
+
+class RemoveProductCart(View):
+    def post(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+
+        if not self.request.session.get("cart"):
+            self.request.session["cart"] = {}
+
+        cart = self.request.session["cart"]
+        quantity = cart[pk]["quantity"] - 1
+
+        updated_values = {
+            "quantity": quantity,
+            "quant_price": cart[pk]["unit_price"] * (quantity),
+            "quant_promotional_price": cart[pk]["unit_promotional_price"] * (quantity),
+        }
+
+        cart[pk].update(updated_values)
+
+        if quantity == 0:
+            cart.pop(pk)
+
+        self.request.session["cart"] = cart
+
+        messages.error(
+            self.request,
+            notifications.success["product_cart_remove"],
+        )
+
+        return redirect("products:cart")
