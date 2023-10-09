@@ -1,13 +1,13 @@
-import json
-from typing import Any
-
 from django.contrib import messages
 from django.db import models
+from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
 
 from templates.static import messages as notifications
+from utils.functions import create_cart
 
 from .models import Product
 
@@ -30,7 +30,7 @@ class Details(DetailView):
     context_object_name = "product"
     slug_url_kwarg = "slug"
 
-    def get_context_data(self, **kwargs: Any):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = self.get_object()
 
@@ -48,7 +48,7 @@ class Cart(View):
     template_name = "products/cart.html"
 
     def get(self, *args, **kwargs):
-        cart = self.request.session.get("cart")
+        cart = create_cart(self)
 
         context = {
             "cart": cart.values(),
@@ -59,17 +59,27 @@ class Cart(View):
 
 class ProductToCart(View):
     def post(self, *args, **kwargs):
-        HTTP_REFERER = self.request.META.get("HTTP_REFERER")
-
         pk = self.kwargs.get("pk")
         product = Product.objects.get(pk=pk)
 
-        if not self.request.session.get("cart"):
-            self.request.session["cart"] = {}
+        product_url = reverse("products:details", args=(pk,))
+        HTTP_REFERER = self.request.META.get("HTTP_REFERER", product_url)
 
-        cart = self.request.session["cart"]
+        cart = create_cart(self)
 
-        if pk not in cart.keys():
+        if pk in cart.keys():
+            quantity = cart[pk]["quantity"]
+
+            updated_values = {
+                "quantity": quantity + 1,
+                "quant_price": cart[pk]["unit_price"] * (quantity + 1),
+                "quant_promotional_price": cart[pk]["unit_promotional_price"]
+                * (quantity + 1),
+            }
+
+            cart[pk].update(updated_values)
+
+        else:
             cart[pk] = {
                 "id": pk,
                 "name": product.name,
@@ -83,18 +93,6 @@ class ProductToCart(View):
                 "quantity": 1,
             }
 
-        elif pk in cart.keys():
-            quantity = cart[pk]["quantity"]
-
-            updated_values = {
-                "quantity": quantity + 1,
-                "quant_price": cart[pk]["unit_price"] * (quantity + 1),
-                "quant_promotional_price": cart[pk]["unit_promotional_price"]
-                * (quantity + 1),
-            }
-
-            cart[pk].update(updated_values)
-
         self.request.session["cart"] = cart
 
         messages.success(
@@ -105,26 +103,7 @@ class ProductToCart(View):
 
 
 class RemoveProductCart(View):
-    def post(self, *args, **kwargs):
-        pk = self.kwargs.get("pk")
-
-        if not self.request.session.get("cart"):
-            self.request.session["cart"] = {}
-
-        cart = self.request.session["cart"]
-        quantity = cart[pk]["quantity"] - 1
-
-        updated_values = {
-            "quantity": quantity,
-            "quant_price": cart[pk]["unit_price"] * (quantity),
-            "quant_promotional_price": cart[pk]["unit_promotional_price"] * (quantity),
-        }
-
-        cart[pk].update(updated_values)
-
-        if quantity == 0:
-            cart.pop(pk)
-
+    def update_cart(self, cart):
         self.request.session["cart"] = cart
 
         messages.error(
@@ -133,3 +112,22 @@ class RemoveProductCart(View):
         )
 
         return redirect("products:cart")
+
+    def post(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+
+        cart = create_cart(self)
+        quantity = cart[pk]["quantity"] - 1
+
+        if quantity == 0:
+            cart.pop(pk)
+            return self.update_cart(cart)
+
+        updated_values = {
+            "quantity": quantity,
+            "quant_price": cart[pk]["unit_price"] * (quantity),
+            "quant_promotional_price": cart[pk]["unit_promotional_price"] * (quantity),
+        }
+
+        cart[pk].update(updated_values)
+        return self.update_cart(cart)

@@ -44,3 +44,10 @@ def cart_total_price(cart):
             for i in cart
         ]
     )
+
+
+def create_cart(self):
+    if not self.request.session.get("cart"):
+        self.request.session["cart"] = {}
+
+    return self.request.session["cart"]
