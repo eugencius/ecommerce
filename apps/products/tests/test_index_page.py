@@ -14,8 +14,8 @@ class ProductIndexTesting(ProductBaseTest):
         self.assertTemplateUsed(response, "products/index.html")
 
     def test_index_renders_just_published_products(self):
-        p001 = self.create_product(is_published=True)
-        p002 = self.create_product(is_published=False)
+        p001 = self.create_product(name="Product 001", is_published=True)
+        p002 = self.create_product(name="Product 002", is_published=False)
 
         response = self.get_index_response()
         products_on_index = len(response.context["products"])

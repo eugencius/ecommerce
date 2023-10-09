@@ -3,9 +3,9 @@ from .product_test_base import ProductBaseTest
 
 class TestProductToCart(ProductBaseTest):
     def setUp(self):
-        self.product001 = self.create_product(name="Product 001")
-
         super().setUp()
+
+        self.product001 = self.create_product(name="Product 001")
 
     def test_adding_product_to_cart(self):
         self.product_to_cart(self.product001.pk)
