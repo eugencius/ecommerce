@@ -30,6 +30,14 @@ class Details(DetailView):
     context_object_name = "product"
     slug_url_kwarg = "slug"
 
+    def get_object(self, queryset=None):
+        product = super().get_object(queryset)
+
+        if product.is_published == False:
+            raise Http404()
+
+        return product
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = self.get_object()
