@@ -12066,6 +12066,16 @@ textarea.form-control-lg {
 }
 
 /* Montenegro's own CSS classes */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .short-description {
   font-size: 0.90rem;
 }
@@ -12082,6 +12092,25 @@ textarea.form-control-lg {
 
 .hover-red:hover {
   color: var(--bs-red);
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+.register-form {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background-color: rgba(114, 114, 114, 0.135);
+  min-height: 40rem; 
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  border-radius: 1rem;
+}
+
+.form-warning-text {
+  font-size: 0.85rem;
 }
 
 /* Montenegro's own CSS classes */

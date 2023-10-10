@@ -51,3 +51,12 @@ def create_cart(self):
         self.request.session["cart"] = {}
 
     return self.request.session["cart"]
+
+
+def add_attrs(field, attr, value):
+    existing_attr = field.widget.attrs.get(attr, "")
+    field.widget.attrs[attr] = f"{value} {existing_attr}"
+
+
+def set_placeholder(field, placeholder):
+    add_attrs(field, "placeholder", placeholder)

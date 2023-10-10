@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% translate "Signup" %} | {% endblock title %}
+
+<a href="{% url "account_signup" %}"></a>
+
+
+{% block content %}
+
+<div class="d-block">
+    {% include "partials/_messages.html" %}
+    <div class="container">
+        <div class="register-form d-flex row m-3 p-5">
+            <div class="col">
+                <div class="text-center mb-3">
+                    <h1 class="mb-0">{% translate "Welcome, new user!" %}</h1>
+                    <p>{% translate "If you're already registered," %} <a class="text-decoration-none" href="{% url 'account_login' %}">{% translate "login here" %}</a></p>
+                </div>
+                <form action="{% url "account_signup" %}" method="post">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        {% for field in form %}
+                        <div class="{{ field.field.widget.attrs.col }}">
+                            <div class="form-floating">
+                                {{ field }}
+                                <label for="{{ field.id_for_label}}">{{ field.label }}</label>
+
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <span class="text-danger form-warning-text">
+                                            {{ error }}
+                                        </span>                                    
+                                    {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-dark mt-5" type="submit">{% translate "Register" %}</button>
+                </form>
+            </div>
+            <div class="col">
+                <img src="{% get_media_prefix %}images/2023/10/computer-illustration.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
