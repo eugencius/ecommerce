@@ -1,3 +1,4 @@
+from .allauth import *
 from .database import *
 from .environment import *
 from .i18n import *
