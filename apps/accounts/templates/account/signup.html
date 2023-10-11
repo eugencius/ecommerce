@@ -4,15 +4,12 @@
 
 {% block title %}{% translate "Signup" %} | {% endblock title %}
 
-<a href="{% url "account_signup" %}"></a>
-
-
 {% block content %}
 
 <div class="d-block">
     {% include "partials/_messages.html" %}
     <div class="container">
-        <div class="register-form d-flex row m-3 p-5">
+        <div class="form-box d-flex row m-3 p-5">
             <div class="col">
                 <div class="text-center mb-3">
                     <h1 class="mb-0">{% translate "Welcome, new user!" %}</h1>
