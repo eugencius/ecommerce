@@ -12097,9 +12097,11 @@ main {
 .center {
   display: grid;
   place-items: center;
+  min-width: 100%;
+  min-height: 100%;
 }
 
-.register-form {
+.form-box {
   display: grid;
   place-items: center;
   text-align: center;
@@ -12111,6 +12113,16 @@ main {
 
 .form-warning-text {
   font-size: 0.85rem;
+}
+
+.external-provider-login {
+  display: inline;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border: 0.1rem solid #000;
+  border-radius: 0.5rem;
+  min-width: 3rem;
+  min-height: 3rem;
 }
 
 /* Montenegro's own CSS classes */
