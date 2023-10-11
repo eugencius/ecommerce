@@ -13,7 +13,6 @@ class SignupView(AllauthSignupView):
         return super().form_invalid(form)
 
     def form_valid(self, form):
-        print(self.request.POST)
         password = self.request.POST.get("password1")
 
         user = form.save(commit=False)
