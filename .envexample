@@ -1,0 +1,10 @@
+# Django Settings
+SECRET_KEY = Django SECRET_KEY
+DEBUG = Boolean -> True or False
+
+# Data Base Settings
+DB_NAME = Your database name here
+DB_HOST = Your database host here
+DB_PORT = Your database port here
+DB_USER = Your database username here
+DB_PASSWORD = Your database password here
