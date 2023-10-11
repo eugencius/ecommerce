@@ -40,13 +40,32 @@
           </ul>
         </li>
       </ul>
-      <form action="{% url "products:cart" %}" class="d-flex">
-        <button class="btn btn-outline-dark" type="submit">
-          <i class="bi-cart-fill me-1"></i>
-          {% translate "Cart" %}
-          <span class="badge bg-dark text-white ms-1 rounded-pill">{{ request.session.cart.values|count_cart_items }}</span>
-        </button>
-      </form>
+      
+      <div class="d-flex gap-2">
+        {% if not request.user.is_authenticated %}
+          <a class="btn btn-outline-dark" href="{% url "account_login" %}">
+            <i class="bi bi-box-arrow-in-right me-1"></i>
+            Login
+          </a>
+        {% else %}
+        <form class="form-inline" method="post" action="{% url "account_logout" %}">
+          {% csrf_token %}
+          <button class="btn btn-outline-dark" type="submit">
+            <i class="bi bi-box-arrow-left me-1"></i>
+            Logout
+          </button>
+        </form>
+        {% endif %}
+
+  
+        <form action="{% url "products:cart" %}" class="d-flex">
+          <button class="btn btn-outline-dark" type="submit">
+            <i class="bi-cart-fill me-1"></i>
+            {% translate "Cart" %}
+            <span class="badge bg-dark text-white ms-1 rounded-pill">{{ request.session.cart.values|count_cart_items }}</span>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </nav>

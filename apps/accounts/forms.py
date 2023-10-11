@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from allauth.account.forms import LoginForm as AllauthLoginForm
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -8,6 +9,19 @@ from django.utils.translation import gettext_lazy as _
 from utils.functions import add_attrs, set_placeholder
 
 User = get_user_model()
+
+
+class LoginForm(AllauthLoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        add_attrs(self.fields["login"], "float", "form-floating mb-3")
+        add_attrs(self.fields["password"], "float", "form-floating mb-3")
+        add_attrs(self.fields["remember"], "float", "form-check text-start")
+
+        add_attrs(self.fields["login"], "class", "form-control")
+        add_attrs(self.fields["password"], "class", "form-control")
+        add_attrs(self.fields["remember"], "class", "form-check-input")
 
 
 class SignupForm(forms.ModelForm):

@@ -1,0 +1,63 @@
+{% extends "base.html" %} 
+{% load i18n %} 
+{% load static %} 
+{% load socialaccount %}
+
+{% block title %} {%  translate "Login" %} | {% endblock title %} {% block content %}
+
+<div class="container d-block">
+  {% include "partials/_messages.html" %}
+  <div class="form-box d-flex row m-3 p-5">
+    <div class="col">
+      <img
+        src="{% get_media_prefix %}images/2023/10/computer-illustration-2.png"
+        alt=""
+      />
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <h1 class="mb-0">{% translate "Welcome back, dear client!" %}</h1>
+        <p>
+          {% translate "Doesn't have an account yet?" %}
+          <a class="text-decoration-none" href="{% url "account_signup" %}"
+            >{% translate "Register here" %}</a
+          >
+        </p>
+      </div>
+      <form class="d-grid" action="{% url "account_login" %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="{{ field.field.widget.attrs.float }}">
+            {{ field }}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          </div>
+        {% endfor %}
+        <button class="btn btn-dark mt-3" type="submit">{% translate "Login" %}</button>
+      </form>
+
+      <hr>
+
+      <div class="mb-3">
+        <h1 class="fw-light mb-0">{% translate "Or" %}</h1>
+        <p class="fw-light">{% translate "Login with one of those tools" %}</p>
+      </div>
+
+      <form class="d-inline" method="post" action="{% provider_login_url "google" %}">
+        {% csrf_token %}
+        <button class="external-provider-login" type="submit">
+          <i class="bi bi-google"></i>
+        </button>
+      </form>
+    
+      <form class="d-inline" method="post" action="{% provider_login_url "github" %}">
+        {% csrf_token %}
+        <button class="external-provider-login" type="submit">
+          <i class="bi bi-github"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
