@@ -1,6 +1,8 @@
 from collections import defaultdict
 
 from allauth.account.forms import LoginForm as AllauthLoginForm
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -15,6 +17,12 @@ class LoginForm(AllauthLoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        captcha = ReCaptchaField(
+            label="Captcha",
+            widget=ReCaptchaV3(),
+        )
+        self.fields["captcha"] = captcha
+
         add_attrs(self.fields["login"], "float", "form-floating mb-3")
         add_attrs(self.fields["password"], "float", "form-floating mb-3")
         add_attrs(self.fields["remember"], "float", "form-check text-start")
@@ -28,6 +36,12 @@ class SignupForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._form_errors = defaultdict(list)
+
+        captcha = ReCaptchaField(
+            label="Captcha",
+            widget=ReCaptchaV3(),
+        )
+        self.fields["captcha"] = captcha
 
         add_attrs(self.fields["email"], "col", "col-12")
         add_attrs(self.fields["first_name"], "col", "col-md-6")

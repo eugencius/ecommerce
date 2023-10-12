@@ -29,7 +29,10 @@
         {% for field in form %}
           <div class="{{ field.field.widget.attrs.float }}">
             {{ field }}
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            
+            {% if field.label != "Captcha" %}
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% endif %}
           </div>
         {% endfor %}
         <button class="btn btn-dark mt-3" type="submit">{% translate "Login" %}</button>

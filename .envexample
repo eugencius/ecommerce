@@ -8,3 +8,8 @@ DB_HOST = Your database host here
 DB_PORT = Your database port here
 DB_USER = Your database username here
 DB_PASSWORD = Your database password here
+
+
+# Recaptcha
+RECAPTCHA_PUBLIC_KEY = Your RECAPTCHA public key
+RECAPTCHA_PRIVATE_KEY = Your RECAPTCHA secret key

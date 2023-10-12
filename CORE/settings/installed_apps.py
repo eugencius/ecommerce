@@ -13,6 +13,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     "apps.accounts",
     "apps.products",
+    "captcha",
 ]
 
 ALLAUTH_APPS = [

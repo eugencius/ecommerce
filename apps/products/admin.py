@@ -14,7 +14,10 @@ class ProductAdmin(admin.ModelAdmin):
         "category",
         "stock",
         "updated_at",
+        "is_published",
     )
+
+    list_editable = ("is_published",)
 
     list_display_links = (
         "id",
