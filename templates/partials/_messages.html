@@ -1,5 +1,5 @@
 {% if messages %}
-<div class="main-content center container mt-4 messages-container">
+<div class="container text-center mt-3">
   {% for message in messages %}
     <div class="alert {{ message.tags}} alert-dismissible fade show" role="alert">
       {{ message|safe }}

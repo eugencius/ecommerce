@@ -9,5 +9,8 @@ success = {
 }
 
 error = {
-    "form_invalid": _("There are invalid fields in your form. Fix them and try again.")
+    "invalid_credentials": _(
+        "Invalid login credentials. Please check your e-mail and password and try again."
+    ),
+    "form_invalid": _("There are invalid fields in your form. Fix them and try again."),
 }

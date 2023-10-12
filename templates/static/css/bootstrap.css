@@ -12076,6 +12076,11 @@ main {
   flex-grow: 1;
 }
 
+.item-card {
+  height: 596px !important;
+  width: 318px !important;
+}
+
 .short-description {
   font-size: 0.90rem;
 }

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Signup" %} | {% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+  <h1>{% trans "Sign Up" %}</h1>
+
+  <p>{% with provider_name=account.get_provider.name site_name=site.name %} {% translate "You are about to use your" %} {{ provider_name }} {% translate "account to login to" %}
+  {{ site_name }}. {% translate "As a final step, please complete the following form" %}: {% endwith %}</p>
+
+  <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-floating">
+        <input placeholder="{{ field.field.widget.attrs.placeholder }}" type="{{ field.field.widget.input_type }}" class="form-control">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      </div>
+    {% endfor %}
+
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    <button class="btn btn-dark m-3" type="submit">{% trans "Sign Up" %} &raquo;</button>
+  </form>
+</div>
+
+{% endblock content %}
