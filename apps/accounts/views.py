@@ -2,9 +2,14 @@ from allauth.account.views import LoginView as AllauthLoginView
 from allauth.account.views import SignupView as AllauthSignupView
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
+from django.views.generic import CreateView
 
 from templates.static import messages as notifications
+
+from .forms import CreateAddress, LoginForm
+from .models import Address
 
 
 class SignupView(AllauthSignupView):
@@ -28,13 +33,31 @@ class SignupView(AllauthSignupView):
 
 
 class LoginView(AllauthLoginView):
+    redirect_field_name = "next"
+
     def form_invalid(self, form):
         email = self.request.POST.get("login")
         password = self.request.POST.get("password")
 
+        url = self.request.path
+        request_next = self.request.POST.get("next", None)
+        next_parameter = f"?next={request_next}" if request_next else ""
+
+        redirect_url = f"{url}{next_parameter}"
+
         is_correct = authenticate(self.request, email=email, password=password)
 
-        if not is_correct:
+        (
             messages.error(self.request, notifications.error["invalid_credentials"])
+            if not is_correct
+            else messages.error(self.request, notifications.error["captcha_invalid"])
+        )
 
-        return super().form_invalid(form)
+        return redirect(redirect_url)
+
+
+class CreateAddress(LoginRequiredMixin, CreateView):
+    model = Address
+    login_url = "account_login"
+    form_class = CreateAddress
+    template_name = "account/address_create.html"
