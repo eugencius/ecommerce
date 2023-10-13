@@ -1,14 +1,17 @@
+from typing import Any
+
+import requests
 from allauth.account.views import LoginView as AllauthLoginView
 from allauth.account.views import SignupView as AllauthSignupView
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
-from django.views.generic import CreateView
+from django.shortcuts import redirect
+from django.views.generic import FormView
 
 from templates.static import messages as notifications
 
-from .forms import CreateAddress, LoginForm
+from .forms import CreateAddress
 from .models import Address
 
 
@@ -56,8 +59,16 @@ class LoginView(AllauthLoginView):
         return redirect(redirect_url)
 
 
-class CreateAddress(LoginRequiredMixin, CreateView):
-    model = Address
+class CreateAddress(LoginRequiredMixin, FormView):
     login_url = "account_login"
     form_class = CreateAddress
     template_name = "account/address_create.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        address = form.save(commit=False)
+        address.user = self.request.user
+        address.save()
+
+        messages.success(self.request, notifications.success["address_registered"])
+        return super().form_valid(form)

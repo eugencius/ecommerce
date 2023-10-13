@@ -8,7 +8,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from utils.functions import add_attrs, set_placeholder
+from utils import functions
+
+from .models import Address
 
 User = get_user_model()
 
@@ -23,13 +25,13 @@ class LoginForm(AllauthLoginForm):
         )
         self.fields["captcha"] = captcha
 
-        add_attrs(self.fields["login"], "float", "form-floating mb-3")
-        add_attrs(self.fields["password"], "float", "form-floating mb-3")
-        add_attrs(self.fields["remember"], "float", "form-check text-start")
+        functions.add_attrs(self.fields["login"], "float", "form-floating mb-3")
+        functions.add_attrs(self.fields["password"], "float", "form-floating mb-3")
+        functions.add_attrs(self.fields["remember"], "float", "form-check text-start")
 
-        add_attrs(self.fields["login"], "class", "form-control")
-        add_attrs(self.fields["password"], "class", "form-control")
-        add_attrs(self.fields["remember"], "class", "form-check-input")
+        functions.add_attrs(self.fields["login"], "class", "form-control")
+        functions.add_attrs(self.fields["password"], "class", "form-control")
+        functions.add_attrs(self.fields["remember"], "class", "form-check-input")
 
 
 class SignupForm(forms.ModelForm):
@@ -43,17 +45,19 @@ class SignupForm(forms.ModelForm):
         )
         self.fields["captcha"] = captcha
 
-        add_attrs(self.fields["email"], "col", "col-12")
-        add_attrs(self.fields["first_name"], "col", "col-md-6")
-        add_attrs(self.fields["last_name"], "col", "col-md-6")
-        add_attrs(self.fields["password1"], "col", "col-md-6")
-        add_attrs(self.fields["password2"], "col", "col-md-6")
+        functions.add_attrs(self.fields["email"], "col", "col-12")
+        functions.add_attrs(self.fields["first_name"], "col", "col-md-6")
+        functions.add_attrs(self.fields["last_name"], "col", "col-md-6")
+        functions.add_attrs(self.fields["password1"], "col", "col-md-6")
+        functions.add_attrs(self.fields["password2"], "col", "col-md-6")
 
-        set_placeholder(self.fields["email"], "Ex.: johndoe@gmail.com")
-        set_placeholder(self.fields["first_name"], "Ex.: John")
-        set_placeholder(self.fields["last_name"], "Ex.: Doe")
-        set_placeholder(self.fields["password1"], _("Please, type your password here."))
-        set_placeholder(
+        functions.set_placeholder(self.fields["email"], "Ex.: johndoe@gmail.com")
+        functions.set_placeholder(self.fields["first_name"], "Ex.: John")
+        functions.set_placeholder(self.fields["last_name"], "Ex.: Doe")
+        functions.set_placeholder(
+            self.fields["password1"], _("Please, type your password here.")
+        )
+        functions.set_placeholder(
             self.fields["password2"],
             _("We need you to confirm your password here."),
         )
@@ -138,6 +142,68 @@ class SignupForm(forms.ModelForm):
         if self._form_errors:
             raise ValidationError(self._form_errors)
 
-    # def save(self):
-    #     user = super().save()
-    #     return user
+
+fields = (
+    "city",
+    "state",
+    "street",
+    "number",
+    "complement",
+    "addressee",
+    "cep",
+    "cpf",
+)
+
+
+class CreateAddress(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        placeholders = (
+            ("city", _("Insert your city.")),
+            ("state", _("Insert your state.")),
+            ("street", _("Type your street.")),
+            ("number", _("Put your house number here.")),
+            ("complement", _("Inform the complement.")),
+            ("addressee", _("Type the name of the addressee.")),
+            ("cep", _("Insert the CEP of your address here.")),
+            ("cpf", _("Insert your CPF here.")),
+        )
+
+        for field in fields:
+            if field == "state":
+                functions.add_attrs(self.fields[field], "class", "form-select")
+
+            functions.add_attrs(self.fields[field], "class", "form-control")
+
+        for field in fields[0:-2]:
+            functions.add_attrs(self.fields[field], "col", "col-md-6")
+
+        for field, placeholder in placeholders:
+            functions.add_attrs(self.fields[field], "placeholder", placeholder)
+
+    state = forms.ChoiceField(
+        initial=("NN", "Escolha seu estado"),
+        label=_("state"),
+        choices=functions.brazil_states,
+    )
+
+    class Meta:
+        model = Address
+        fields = fields
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data["cpf"]
+
+        is_valid = functions.validate_cpf(cpf)
+        already_used = Address.objects.filter(cpf=cpf).exists()
+
+        if not is_valid:
+            raise ValidationError(_("The CPF you presented is not valid."))
+
+        if already_used:
+            raise ValidationError(
+                _("The CPF you presented is already in use by another user.")
+            )
+
+        return cpf

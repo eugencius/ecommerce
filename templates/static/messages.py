@@ -6,6 +6,7 @@ success = {
     "registered_successfuly": _(
         "Now you're registered! Just login and be prepared to enjoy our site."
     ),
+    "address_registered": _("You've registered a new address sucessfuly!"),
 }
 
 error = {
@@ -13,4 +14,5 @@ error = {
         "Invalid login credentials. Please check your e-mail and password and try again."
     ),
     "form_invalid": _("There are invalid fields in your form. Fix them and try again."),
+    "captcha_invalid": _("The captcha validation failed. Please try again."),
 }

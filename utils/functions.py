@@ -1,8 +1,11 @@
 import locale
 import os
 
+import requests
 from django.conf import settings
 from PIL import Image
+
+from .validate_cpf import ValidatingCPF
 
 
 def format_currency(value):
@@ -60,3 +63,16 @@ def add_attrs(field, attr, value):
 
 def set_placeholder(field, placeholder):
     add_attrs(field, "placeholder", placeholder)
+
+
+def brazil_states() -> list:
+    response = requests.get("https://www.geonames.org/childrenJSON?geonameId=3469034")
+
+    json = response.json()
+    return [
+        (state["adminCodes1"]["ISO3166_2"], state["name"]) for state in json["geonames"]
+    ]
+
+
+def validate_cpf(cpf):
+    return ValidatingCPF().validate_cpf(cpf)

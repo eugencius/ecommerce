@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Create new address" %} | {% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="form-box">
+    <div class="m-5 w-50">
+      <div class="mb-3">
+        <h1 class="mb-0">{% translate "Hello" %}, {{ request.user.first_name }}!</h1>
+        <p>{% translate "In this page you create a new address for your account." %}</p>
+      </div>
+      <form class="d-grid" action="{% url "account_create_address" %}" method="post">
+        {% csrf_token %}
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="{{ field.field.widget.attrs.col }}">
+              <div class="form-floating">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                {% if field.errors %}
+                  {% for error in field.errors %}
+                    <span class="text-danger form-warning-text">
+                      {{ error}}
+                    </span>  
+                  {% endfor %}
+                {% endif %}
+
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <button class="btn btn-dark m-3" type="submit">
+          {% translate "Create address" %}
+        </button>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

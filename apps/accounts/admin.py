@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import CustomUser
+from .models import Address, CustomUser
 
 
 @admin.register(CustomUser)
@@ -52,3 +52,6 @@ class UserAdmin(BaseUserAdmin):
         "groups",
         "user_permissions",
     )
+
+
+admin.site.register(Address)

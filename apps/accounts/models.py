@@ -46,3 +46,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
+
+
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    city = models.CharField(_("city"), max_length=255)
+    state = models.CharField(_("state"), max_length=255)
+    street = models.CharField(_("street"), max_length=255)
+    number = models.CharField(_("number"), max_length=12)
+    complement = models.CharField(
+        _("complement"),
+        max_length=64,
+        blank=True,
+        null=True,
+        help_text=_("Ex.: House B, Apt. 76"),
+    )
+    addressee = models.CharField(_("addressee"), max_length=64)
+    cep = models.CharField(
+        max_length=8, help_text=_("Type the CEP without any punctuations.")
+    )
+    cpf = models.CharField(
+        max_length=11,
+        help_text=_("Type the CPF without any punctuations."),
+        unique=True,
+    )
+
+    def __str__(self):
+        return f"Address of {self.user}"
