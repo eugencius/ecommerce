@@ -11,6 +11,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
+    "apps.orders",
     "apps.accounts",
     "apps.products",
     "captcha",
