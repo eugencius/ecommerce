@@ -57,6 +57,16 @@ class LoginView(allauth.LoginView):
         return redirect(redirect_url)
 
 
+class LogoutView(allauth.LogoutView):
+    def post(self, *args, **kwargs):
+        cart = self.request.session.get("cart", None)
+
+        super().post(*args, **kwargs)
+
+        self.request.session["cart"] = cart
+        return redirect("products:index")
+
+
 class CreateAddress(LoginRequiredMixin, FormView):
     login_url = "account_login"
     form_class = CreateAddress
