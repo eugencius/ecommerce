@@ -1,21 +1,19 @@
 from typing import Any
 
-import requests
-from allauth.account.views import LoginView as AllauthLoginView
-from allauth.account.views import SignupView as AllauthSignupView
+import allauth.account.views as allauth
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import FormView
 
 from templates.static import messages as notifications
 
 from .forms import CreateAddress
-from .models import Address
 
 
-class SignupView(AllauthSignupView):
+class SignupView(allauth.SignupView):
     def form_invalid(self, form):
         messages.error(self.request, notifications.error["form_invalid"])
 
@@ -35,7 +33,7 @@ class SignupView(AllauthSignupView):
         return redirect("account_login")
 
 
-class LoginView(AllauthLoginView):
+class LoginView(allauth.LoginView):
     redirect_field_name = "next"
 
     def form_invalid(self, form):
@@ -64,6 +62,14 @@ class CreateAddress(LoginRequiredMixin, FormView):
     form_class = CreateAddress
     template_name = "account/address_create.html"
     success_url = "/"
+
+    def get_success_url(self):
+        next_url = self.request.POST.get("next", None)
+
+        if next_url:
+            return next_url
+
+        return reverse("products:index")
 
     def form_valid(self, form):
         address = form.save(commit=False)
