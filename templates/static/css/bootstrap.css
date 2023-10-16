@@ -12130,6 +12130,18 @@ main {
   min-height: 3rem;
 }
 
+.cart-box {
+  min-width: 1296px;
+  min-height: 673px;
+}
+
+.cart-back-to-shopping {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem;
+}
+
 /* Montenegro's own CSS classes */
 
 /*# sourceMappingURL=bootstrap.css.map */

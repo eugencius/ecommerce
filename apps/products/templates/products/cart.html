@@ -10,7 +10,7 @@
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
-        <div class="card card-registration card-registration-2" style="border-radius: 15px">
+        <div class="card card-registration card-registration-2 cart-box" style="border-radius: 15px">
           <div class="card-body p-0">
             <div class="row g-0">
               <div class="col-lg-8">
@@ -78,12 +78,6 @@
                   </div>
                   {% endif %}
 
-                  <div class="pt-5">
-                    <h6 class="mb-0">
-                      <a href="{% url "products:index" %}" class="text-body"
-                        ><i class="bi bi-arrow-left me-2"></i>{% translate "Back to shop" %}</a>
-                    </h6>
-                  </div>
                 </div>
               </div>
               <div class="col-lg-4 bg-grey">
@@ -103,6 +97,12 @@
                   <a class="btn btn-dark d-grid btn-lg" href="{% url "orders:checkout" %}">Checkout</a>
                 </div>
               </div>
+            </div>
+            <div class="pt-5 cart-back-to-shopping">
+              <h6 class="mb-0">
+                <a href="{% url "products:index" %}" class="text-body"
+                  ><i class="bi bi-arrow-left me-2"></i>{% translate "Back to shop" %}</a>
+              </h6>
             </div>
           </div>
         </div>
