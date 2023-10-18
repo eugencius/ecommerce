@@ -1,8 +1,11 @@
+from typing import Any
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
-from django.views.generic import View
+from django.views.generic import ListView, View
 
 from apps.accounts.models import Address
 from templates.static import messages as notifications
@@ -18,6 +21,18 @@ class VerifyCartMixin:
             return redirect("products:index")
 
         return super().dispatch(request, *args, **kwargs)
+
+
+class ListOrders(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "orders/list_orders.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(user=self.request.user).order_by("-id")
+
+        return qs
 
 
 class CheckoutView(LoginRequiredMixin, VerifyCartMixin, View):

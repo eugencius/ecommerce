@@ -1,0 +1,47 @@
+{% extends "base.html" %} 
+{% load ecfilters %} 
+{% load humanize %} 
+{% load i18n%} 
+
+{% block title %}{% translate "My orders" %} | {% endblock title %} 
+
+
+{% block content %}
+<div class="container m-3 p-3">
+
+  <div class="text-center mb-3">
+    <h1 class="mb-0">{% translate "List of my orders" %}</h1>
+    <p class="lead">{% translate "Hello" %}, {{ request.user.first_name }}. {% translate "Here you are able to check all of your orders and its informations." %}</p>
+  </div>
+
+  <div class="d-flex flex-row justify-content-center">
+      <div class="row hstack gx-3">
+      {% for order in orders %}
+        <div class="col d-inline-flex mb-4">
+          <div class="card" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title">{{ order }}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                  <span class="fw-bold">{% translate "Total price:" %}</span> {{ order.total_price|format_currency_template }}
+              </li>
+    
+              <li class="list-group-item">
+                  <span class="fw-bold">{% translate "Items quantity:" %}</span> {{ order.total_items }}
+              </li>
+              <li class="list-group-item">
+                  <span class="fw-bold">{% translate "Date:" %}</span> {{ order.created_at|naturalday|title }}
+              </li>
+            </ul>
+            <div class="card-body">
+              <a href="#" class="card-link text-decoration-none">{% translate "See order informations" %}</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
