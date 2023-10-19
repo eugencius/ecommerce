@@ -1,0 +1,53 @@
+{% load i18n %}
+{% load ecfilters %}
+
+<div class="container px-4 px-lg-5">
+<a class="navbar-brand" href="{% url "products:index" %}">Montenegro</a>
+<button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+>
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{% url "products:index" %}">{% translate "Home" %}</a>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="#!">{% translate "About" %}</a></li>
+    <li class="nav-item dropdown">
+        <a
+        class="nav-link dropdown-toggle"
+        id="navbarDropdown"
+        href="#"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        >{% translate "Shop" %}</a
+        >
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="#!">{% translate "All Products" %}</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="#!">{% translate "Cellphones" %}</a></li>
+        <li><a class="dropdown-item" href="#!">{% translate "T-Shirts" %}</a></li>
+        </ul>
+    </li>
+    </ul>
+    
+
+    <div class="d-flex gap-2">
+			{% if light_nav %}
+				{% include "partials/_dark_cart_btn.html" %}
+				{% include "partials/_dark_logout_btn.html" %}
+			{% else %}
+				{% include "partials/_light_cart_btn.html" %}
+				{% include "partials/_light_logout_btn.html" %}
+			{% endif %}
+    </div>
+</div>
+</div>
