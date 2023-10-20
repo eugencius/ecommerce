@@ -3,7 +3,6 @@ from typing import Any
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, View
 
@@ -25,7 +24,7 @@ class VerifyCartMixin:
 
 class ListOrders(LoginRequiredMixin, ListView):
     model = Order
-    template_name = "orders/list_orders.html"
+    template_name = "orders/list.html"
     context_object_name = "orders"
 
     def get_queryset(self):
@@ -33,6 +32,22 @@ class ListOrders(LoginRequiredMixin, ListView):
         qs = qs.filter(user=self.request.user).order_by("-id")
 
         return qs
+
+
+class OrderDetails(LoginRequiredMixin, View):
+    template_name = "orders/details.html"
+
+    def get(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        order = Order.objects.get(pk=pk)
+        items = OrderItem.objects.filter(order=order)
+
+        self.context = {
+            "order": order,
+            "items": items,
+        }
+
+        return render(self.request, self.template_name, self.context)
 
 
 class CheckoutView(LoginRequiredMixin, VerifyCartMixin, View):
@@ -93,6 +108,7 @@ class CreateOrder(LoginRequiredMixin, VerifyCartMixin, View):
                     name=item["name"],
                     slug=item["slug"],
                     price=item["unit_price"],
+                    short_description=item["short_description"],
                     promotional_price=item["unit_promotional_price"],
                     cover=item["cover"],
                     category=item["category"],
