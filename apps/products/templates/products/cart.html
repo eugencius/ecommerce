@@ -61,7 +61,11 @@
                       </div>
                       <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                         <h6 class="text-muted">{% translate "Price" %}</h6>
-                        <h6 class="mb-0">{{ item.quant_promotional_price|format_currency_template }}</h6>
+                        {% if item.quant_promotional_price %}
+                          <h6 class="mb-0">{{ item.quant_promotional_price|format_currency_template }}</h6>
+                        {% else %}
+                          <h6 class="mb-0">{{ item.quant_price|format_currency_template }}</h6>
+                        {% endif %}
                       </div>
                       <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                         <a href="#!" class="text-muted"
