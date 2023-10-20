@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from apps.accounts.models import Address
 
@@ -21,7 +22,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f"Order nº{self.pk}"
+        return _("Order ") + f"#{self.pk}"
 
     def save(self, *args, **kwargs):
         self.total_price = round(self.total_price, 2)
@@ -32,6 +33,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     slug = models.CharField(max_length=64)
+    short_description = models.CharField(max_length=128)
     price = models.FloatField()
     promotional_price = models.FloatField(default=0)
     cover = models.CharField(max_length=999)
@@ -39,4 +41,4 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"Item from the order nº{self.order.pk}"
+        return _("Item from the order ") + f"#{self.order.pk}"

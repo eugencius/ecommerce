@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib import messages
 from django.db import models
 from django.http import Http404
@@ -22,6 +24,13 @@ class Index(ListView):
         qs = super().get_queryset()
         qs = qs.order_by("-id").filter(is_published=True)
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["light_nav"] = True
+
+        return context
 
 
 class Details(DetailView):
@@ -92,6 +101,7 @@ class ProductToCart(View):
                 "id": pk,
                 "name": product.name,
                 "slug": product.slug,
+                "short_description": product.short_description,
                 "unit_price": product.price,
                 "unit_promotional_price": product.promotional_price,
                 "quant_price": product.price,
