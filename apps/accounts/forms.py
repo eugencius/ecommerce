@@ -147,6 +147,7 @@ fields = (
     "city",
     "state",
     "street",
+    "neighborhood",
     "number",
     "complement",
     "addressee",
@@ -163,6 +164,7 @@ class CreateAddress(forms.ModelForm):
             ("city", _("Insert your city.")),
             ("state", _("Insert your state.")),
             ("street", _("Type your street.")),
+            ("neighborhood", _("Insert your neighborhood here.")),
             ("number", _("Put your house number here.")),
             ("complement", _("Inform the complement.")),
             ("addressee", _("Type the name of the addressee.")),
@@ -176,7 +178,7 @@ class CreateAddress(forms.ModelForm):
 
             functions.add_attrs(self.fields[field], "class", "form-control")
 
-        for field in fields[0:-2]:
+        for field in fields[0:-3]:
             functions.add_attrs(self.fields[field], "col", "col-md-6")
 
         for field, placeholder in placeholders:

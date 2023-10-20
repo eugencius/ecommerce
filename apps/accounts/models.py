@@ -53,6 +53,7 @@ class Address(models.Model):
     city = models.CharField(_("city"), max_length=255)
     state = models.CharField(_("state"), max_length=255)
     street = models.CharField(_("street"), max_length=255)
+    neighborhood = models.CharField(_("neighborhood"), max_length=255)
     number = models.CharField(_("number"), max_length=12)
     complement = models.CharField(
         _("complement"),
