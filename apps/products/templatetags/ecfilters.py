@@ -21,6 +21,6 @@ def cart_total_price(cart):
     return functions.cart_total_price(cart)
 
 
-@register.filter(name="translate_category")
-def translate_category(name):
+@register.filter(name="translate_template")
+def translate_template(name):
     return str(_(name))
