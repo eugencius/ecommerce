@@ -10,6 +10,7 @@ success = {
     "order_placed": _(
         "Your order was placed sucessfully! Thank you for trusting in our site."
     ),
+    "item_favorited": _("You have saved this product successfuly!"),
 }
 
 error = {
@@ -22,4 +23,16 @@ error = {
     "order_get": _("You have to click on the button here to place an order."),
     "invalid_shipping": _("The method of shipping chosen is not valid."),
     "invalid_address": _("The address chosen is not valid."),
+}
+
+templates_messages = {
+    "shop": _("Shop"),
+    "all_products": _("All Products"),
+    "t_shirt": _("T-Shirt"),
+    "shipping": _("Shipping"),
+    "cellphone": _("Cellphone"),
+    "general": _("General"),
+    "socialaccounts_exists": _(
+        "An account already exists with this email address. Please sign in to that account first, then connect your %s account."
+    ),
 }

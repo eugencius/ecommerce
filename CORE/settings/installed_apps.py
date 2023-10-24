@@ -15,6 +15,7 @@ PROJECT_APPS = [
     "apps.orders",
     "apps.accounts",
     "apps.products",
+    "apps.favorites",
     "captcha",
 ]
 

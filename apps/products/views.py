@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
 
+from apps.favorites.models import FavoriteList
 from templates.static import messages as notifications
 from utils.functions import create_cart
 
@@ -50,6 +51,11 @@ class Details(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = self.get_object()
+        user = self.request.user
+
+        if user.is_authenticated:
+            user_lists = FavoriteList.objects.filter(user=user)
+            context["user_lists"] = user_lists
 
         category = context["product"].category
         related_products = Product.objects.filter(

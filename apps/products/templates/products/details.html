@@ -37,13 +37,43 @@
             value="1"
             style="max-width: 3rem"
           />
-          <form action="{% url "products:to-cart" product.pk %}" method="post">
+          <form class="me-3" action="{% url "products:to-cart" product.pk %}" method="post">
             {% csrf_token %}
             <button class="btn btn-outline-dark flex-shrink-0" type="submit">
               <i class="bi-cart-fill me-1"></i>
               {% translate "Add to cart" %}
             </button>
           </form>
+
+          {% if request.user.is_authenticated %}
+          <div class="dropdown-center">
+            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bookmark-fill"></i>
+              <span class="ms-1">{% translate "Save for later" %}</span>
+            </button>
+            <ul class="dropdown-menu">
+              {% for list in user_lists %}
+              <form action="{% url "favorites:favorite_item" list.pk product.pk %}" method="post">
+                {% csrf_token %}
+                <li><button type="submit" class="dropdown-item">{{ list.name }}</button></li>
+              </form>
+              {% endfor %}
+
+              {% if user_lists %}
+                <li><hr class="dropdown-divider"></li>
+              {% endif %}
+              
+              <li class="dropdown-item">
+                <button type="button" class="btn-no-decoration" data-bs-toggle="modal" data-bs-target="#createList">{% translate "Create a new list" %}</button>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+            <a href="{% url "account_login" %}?next={% url "products:details" product.slug %}" class="btn btn-dark">
+              {% translate "Login here to favorite this item!" %}
+            </a>
+          {% endif %}
+
         </div>
       </div>
     </div>
@@ -52,7 +82,7 @@
 <!-- Related items section-->
 <section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
-    <h2 class="fw-bolder mb-4">Related products</h2>
+    <h2 class="fw-bolder mb-4">{% translate "Related products" %}</h2>
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       {% for product in related_products %}
         {% include "partials/_product.html" %}
