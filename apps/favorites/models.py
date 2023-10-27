@@ -35,7 +35,7 @@ class ItemFavorited(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{_('Item favorited in the list')} {self.list.name}"
+        return f"{_('Item favorited in the list')} {self.favorites_list.name}"
 
     class Meta:
         verbose_name = _("Item Favorited")

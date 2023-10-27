@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, View
 
 from apps.products.models import Product
@@ -22,6 +21,25 @@ class DisplayLists(LoginRequiredMixin, ListView):
         qs = qs.filter(user=self.request.user).order_by("-id")
 
         return qs
+
+
+class ListDetails(LoginRequiredMixin, View):
+    login_url = "account_login"
+    template_name = "favorites/details.html"
+
+    # TODO: Create an alternate manager for the query of items in lists
+
+    def get(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        list_model = get_object_or_404(FavoriteList, pk=pk)
+        items = ItemFavorited.objects.filter(favorites_list=list_model)
+
+        self.context = {
+            "list": list_model,
+            "items": items,
+        }
+
+        return render(self.request, self.template_name, self.context)
 
 
 class CreateList(LoginRequiredMixin, View):
@@ -50,6 +68,15 @@ class FavoriteItem(LoginRequiredMixin, View):
 
         product = get_object_or_404(Product, pk=product_pk)
         favorites_list = get_object_or_404(FavoriteList, pk=list_pk)
+
+        already_exists = ItemFavorited.objects.filter(
+            favorites_list=favorites_list,
+            product=product,
+        ).exists()
+
+        if already_exists:
+            messages.error(self.request, notifications.error["already_favorited"])
+            return redirect(HTTP_REFERER)
 
         ItemFavorited.objects.create(
             favorites_list=favorites_list,

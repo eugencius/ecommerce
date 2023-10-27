@@ -23,6 +23,7 @@ error = {
     "order_get": _("You have to click on the button here to place an order."),
     "invalid_shipping": _("The method of shipping chosen is not valid."),
     "invalid_address": _("The address chosen is not valid."),
+    "already_favorited": _("This item is already favorited in this list."),
 }
 
 templates_messages = {
