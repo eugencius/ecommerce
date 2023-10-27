@@ -1,12 +1,27 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import View
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import ListView, View
 
 from apps.products.models import Product
-
 from templates.static import messages as notifications
+
 from .models import FavoriteList, ItemFavorited
+
+
+class DisplayLists(LoginRequiredMixin, ListView):
+    model = FavoriteList
+    template_name = "favorites/list.html"
+    context_object_name = "lists"
+    login_url = "account_login"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        qs = qs.filter(user=self.request.user).order_by("-id")
+
+        return qs
 
 
 class CreateList(LoginRequiredMixin, View):
@@ -41,9 +56,5 @@ class FavoriteItem(LoginRequiredMixin, View):
             product=product,
         )
 
-        messages.success(
-            self.request,
-            notifications.success["item_favorited"]
-        )
+        messages.success(self.request, notifications.success["item_favorited"])
         return redirect(HTTP_REFERER)
-

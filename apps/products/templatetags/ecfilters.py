@@ -1,6 +1,7 @@
 from django import template
 from django.utils.translation import gettext as _
 
+from apps.favorites.models import ItemFavorited
 from utils import functions
 
 register = template.Library()
@@ -24,3 +25,8 @@ def cart_total_price(cart):
 @register.filter(name="translate_template")
 def translate_template(name):
     return str(_(name))
+
+
+@register.filter(name="count_items_in_list")
+def count_items_in_list(list_name):
+    return ItemFavorited.objects.filter(favorites_list__name__exact=list_name).count()

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load humanize %}
+{% load ecfilters %}
+
+{% block title %} {% translate "My lists" %} | {% endblock title %}
+
+
+{% block content %}
+
+<div class="container text-center">
+    <div class="mb-3">
+        <h1>{% translate "My favorites lists" %}</h1>
+        <p class="lead">{% translate "Hello" %}, {{ request.user.first_name }}! {% translate "Here you can see all of your favorites lists." %}</p>
+    </div>
+    
+    <div class="row g-5">
+        {% for list in lists %}
+            <div class="col-md-6 shadow">
+                <a class="text-decoration-none text-dark" href="">
+                    <div class="p-3">
+                        <h3>{{ list.name }}</h3>
+                        <p>{{ list.created_at|naturalday|title }}, {{ list.name|count_items_in_list }} {% translate "items" %}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock content %}
