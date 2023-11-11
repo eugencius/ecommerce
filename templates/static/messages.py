@@ -11,6 +11,7 @@ success = {
         "Your order was placed sucessfully! Thank you for trusting in our site."
     ),
     "item_favorited": _("You have saved this product successfuly!"),
+    "list_deleted": _("You have deleted a list sucessfuly."),
 }
 
 error = {

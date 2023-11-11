@@ -61,6 +61,18 @@ class CreateList(LoginRequiredMixin, View):
         return redirect(HTTP_REFERER)
 
 
+class DeleteList(LoginRequiredMixin, View):
+    login_url = LOGIN_URL
+
+    def post(self, *args, **kwargs):
+        list_pk = self.kwargs.get("pk")
+
+        (FavoriteList.objects.get(pk=list_pk)).delete()
+
+        messages.success(self.request, notifications.success["list_deleted"])
+        return redirect("favorites:lists")
+
+
 class FavoriteItem(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         HTTP_REFERER = self.request.META.get("HTTP_REFERER")

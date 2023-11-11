@@ -8,6 +8,7 @@ urlpatterns = [
     path("lists/", views.DisplayLists.as_view(), name="lists"),
     path("list/details/<pk>", views.ListDetails.as_view(), name="details"),
     path("list/create/", views.CreateList.as_view(), name="create_list"),
+    path("list/delete/<pk>", views.DeleteList.as_view(), name="delete_list"),
     path(
         "list/item/remove/<pk>", views.RemoveFromList.as_view(), name="remove_from_list"
     ),

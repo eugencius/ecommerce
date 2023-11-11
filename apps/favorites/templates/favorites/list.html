@@ -16,13 +16,21 @@
     
     <div class="row g-5">
         {% for list in lists %}
-            <div class="col-md-6 shadow">
+            <div class="position-relative col-md-6 shadow">
                 <a class="text-decoration-none text-dark" href="{% url "favorites:details" list.pk %}">
                     <div class="p-3">
                         <h3>{{ list.name }}</h3>
                         <p>{{ list.created_at|naturalday|title }}, {{ list.name|count_items_in_list }} {% translate "items" %}</p>
                     </div>
                 </a>
+
+                <div class="position-absolute top-0 end-0 m-2">
+                    <form class="form-delete" action="{% url "favorites:delete_list" list.pk %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn-close" aria-label="remove-button"></button>
+                    </form>
+                </div>
+
             </div>
         {% endfor %}
     </div>
