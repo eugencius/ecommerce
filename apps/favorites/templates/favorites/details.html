@@ -10,43 +10,65 @@
 <div class="container m-3 p-3">
   
   <div class="d-flex flex-row justify-content-between mb-3">
-    <div>
-      <h1>{{ list.name }}</h1>
+    <span>
+      <span class="align-items-center d-flex">
+        <a class="icon-danger" href="{% url "favorites:lists" %}">
+          <i class="bi bi-arrow-left me-2" style="font-size: 1.5rem;"></i>
+        </a>
+        <h1>{{ list.name }}</h1>
+      </span>
       <p>
         {% translate "List created" %} <b>{{ list.created_at|naturalday|title }}</b>
       </p>
-    </div>
+    </span>
 
-    <div>
+    <span>
       <h2>{% translate "Informations" %}</h1>
       <p class="mb-0">{{ items.count }} {% translate "items" %}</p>
-    </div>
+      </span>
   </div>
 
   <hr class="my-4" />
 
-  {% for item in items %}
   <div class="row mb-3">
-    <div class="col-md-2 d-inline">
-        <a href="{% url "products:details" item.product.slug  %}">
-            <img src="{{ item.product.cover.url }}" alt="" style="height: 200px; width: auto" />
-        </a>
-    </div>
-  
-    <div class="col-md-6">
-      <h6>{{ item.product.name }}</h6>
+    {% if items %}
+      {% for item in items %}
+      <span class="position-relative d-flex">
+        <div class="col-md-2">
+            <a href="{% url "products:details" item.product.slug  %}">
+                <img src="{{ item.product.cover.url }}" alt="" style="height: 200px; width: auto" />
+            </a>
+        </div>
+      
+        <div class="col-md-6">
+          <h6>{{ item.product.name }}</h6>
 
-      {% if item.product.promotional_price %}
-      <p class="my-3">
-        <b>{{ item.product.promotional_price|format_currency_template }}</b>
-      </p>
-      {% else %}
-      <p class="my-3"><b>{{ item.product.price|format_currency_template }}</b></p>
-      {% endif %}
-      <span class="text-muted">{{ item.product.short_description }}</span>
+          {% if item.product.promotional_price %}
+          <p class="my-3">
+            <b>{{ item.product.promotional_price|format_currency_template }}</b>
+          </p>
+          {% else %}
+          <p class="my-3"><b>{{ item.product.price|format_currency_template }}</b></p>
+          {% endif %}
+          <span class="text-muted">{{ item.product.short_description }}</span>
+        </div>
+        <div class="position-absolute top-0 end-0 me-3">
+          <form class="form-delete" action="{% url "favorites:remove_from_list" item.pk  %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-close" aria-label="remove-button"></button>
+          </form>
+        </div>
+      </span>
+      <hr class="my-4" />
+      {% endfor %}
+    {% else %}
+      <h3 class="text-center fw-normal">
+        {% translate "This list is currently empty. Go for the" %}
+        <a class="text-decoration-none" href="{% url "products:index" %}">{% translate "index page" %}</a>
+        {% translate "and navigate through our products to find something that you like!" %}
+      </h3>
+    {% endif %}
   </div>
-  <hr class="my-4" />
-  {% endfor %}
 </div>
 
 {% endblock content %}

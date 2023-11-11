@@ -8,12 +8,14 @@ from templates.static import messages as notifications
 
 from .models import FavoriteList, ItemFavorited
 
+LOGIN_URL = "account_login"
+
 
 class DisplayLists(LoginRequiredMixin, ListView):
     model = FavoriteList
     template_name = "favorites/list.html"
     context_object_name = "lists"
-    login_url = "account_login"
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -24,10 +26,10 @@ class DisplayLists(LoginRequiredMixin, ListView):
 
 
 class ListDetails(LoginRequiredMixin, View):
-    login_url = "account_login"
+    login_url = LOGIN_URL
     template_name = "favorites/details.html"
 
-    # TODO: Create an alternate manager for the query of items in lists
+    # TODO: -- Create an alternate manager for the query of items in lists
 
     def get(self, *args, **kwargs):
         pk = self.kwargs.get("pk")
@@ -43,7 +45,7 @@ class ListDetails(LoginRequiredMixin, View):
 
 
 class CreateList(LoginRequiredMixin, View):
-    login_url = "account_login"
+    login_url = LOGIN_URL
 
     def post(self, *args, **kwargs):
         HTTP_REFERER = self.request.META.get("HTTP_REFERER", "products:index")
@@ -85,3 +87,14 @@ class FavoriteItem(LoginRequiredMixin, View):
 
         messages.success(self.request, notifications.success["item_favorited"])
         return redirect(HTTP_REFERER)
+
+
+class RemoveFromList(LoginRequiredMixin, View):
+    def post(self, *args, **kwargs):
+        item_pk = self.kwargs.get("pk")
+        item = get_object_or_404(ItemFavorited, pk=item_pk)
+
+        list_pk = item.favorites_list.pk
+
+        item.delete()
+        return redirect("favorites:details", list_pk)
