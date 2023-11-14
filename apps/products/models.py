@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from utils.functions import resize_image
+from utils import resize_image
 
 
 class Category(models.Model):

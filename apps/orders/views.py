@@ -8,7 +8,7 @@ from django.views.generic import ListView, View
 
 from apps.accounts.models import Address
 from templates.static import messages as notifications
-from utils.functions import cart_total_price, count_items_on_cart
+from utils import cart_total_price, count_items_on_cart
 
 from .models import Order, OrderItem
 

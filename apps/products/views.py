@@ -1,7 +1,4 @@
-from typing import Any
-
 from django.contrib import messages
-from django.db import models
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -10,16 +7,18 @@ from django.views.generic import DetailView, ListView, View
 
 from apps.favorites.models import FavoriteList
 from templates.static import messages as notifications
-from utils.functions import create_cart
+from utils import create_cart, make_pagination
 
 from .models import Product
+
+PER_PAGE = 1
 
 
 class Index(ListView):
     model = Product
     template_name = "products/index.html"
     context_object_name = "products"
-    paginate_by = 6
+    paginate_by = PER_PAGE
 
     def get_queryset(self):
         qs = super().get_queryset()
