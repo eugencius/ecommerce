@@ -14008,6 +14008,15 @@ main {
   color: #ff0000;
 }
 
+.pagination>li>a {
+  color: #000 !important;
+}
+
+.pagination>.active>a {
+  background-color: #C0C0C0;
+  border-color: #C0C0C0;
+}
+
 /* Montenegro's own CSS classes */
 
 /*# sourceMappingURL=bootstrap.css.map */

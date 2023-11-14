@@ -1,31 +1,30 @@
-{% if page_obj.has_other_pages %}
-<div class="pagination-container text-center">
-    <nav aria-label="Page navigation example" class="pagination-wrapper">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% endif %}
 
-            {% for page in pagination.pagination %}
-                {% if page == pagination.current_page %}
-                    <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-                {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-                {% endif %}
-            {% endfor %}
-            
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-</div>
+{% if paginator.is_paginated  %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if paginator.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ paginator.previous_page }}">
+          <i class="bi bi-chevron-left"></i>
+        </a></li>
+      {% endif %}
+
+      {% for page in paginator.pagination %}
+        {% if page == paginator.current_page %}
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+        
+      {% if paginator.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ paginator.next_page }}">
+          <i class="bi bi-chevron-right"></i>
+        </a></li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endif %}
