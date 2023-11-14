@@ -11,7 +11,7 @@ from utils import create_cart, make_pagination
 
 from .models import Product
 
-PER_PAGE = 1
+PER_PAGE = 9
 
 
 class Index(ListView):
@@ -28,6 +28,15 @@ class Index(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        paginator = context["paginator"]
+        page_range = paginator.page_range
+        current_page = int(self.request.GET.get("page", 1))
+
+        paginator = make_pagination(
+            page_range=page_range, qty_pages=10, current_page=current_page
+        )
+
+        context["paginator"] = paginator
         context["light_nav"] = True
 
         return context
