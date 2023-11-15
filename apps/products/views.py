@@ -68,7 +68,7 @@ class Details(DetailView):
         category = context["product"].category
         related_products = Product.objects.filter(
             category__exact=category, is_published=True
-        ).exclude(id=obj.id)
+        ).exclude(id=obj.id)[:4]
 
         context["related_products"] = related_products
 
