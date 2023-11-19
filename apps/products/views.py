@@ -29,7 +29,7 @@ class Index(ListView):
         context = super().get_context_data(**kwargs)
 
         context["light_nav"] = True
-        insert_new_pagination(context=context, request=self.request)
+        insert_new_pagination(context=context, request=self.request, qty_pages=6)
 
         return context
 
