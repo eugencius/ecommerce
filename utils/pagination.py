@@ -1,6 +1,18 @@
 import math
 
 
+def insert_new_pagination(context, request):
+    paginator = context["paginator"]
+    page_range = paginator.page_range
+    current_page = int(request.GET.get("page", 1))
+
+    paginator = make_pagination(
+        page_range=page_range, qty_pages=10, current_page=current_page
+    )
+
+    context["paginator"] = paginator
+
+
 def make_pagination(page_range, qty_pages, current_page):
     total_pages = len(page_range)
 
