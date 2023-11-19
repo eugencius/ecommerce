@@ -8,9 +8,11 @@ from django.views.generic import ListView, View
 
 from apps.accounts.models import Address
 from templates.static import messages as notifications
-from utils import cart_total_price, count_items_on_cart
+from utils import cart_total_price, count_items_on_cart, insert_new_pagination
 
 from .models import Order, OrderItem
+
+PER_PAGE = 8
 
 
 class VerifyCartMixin:
@@ -26,12 +28,20 @@ class ListOrders(LoginRequiredMixin, ListView):
     model = Order
     template_name = "orders/list.html"
     context_object_name = "orders"
+    paginate_by = PER_PAGE
 
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.filter(user=self.request.user).order_by("-id")
 
         return qs
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        insert_new_pagination(context=context, request=self.request)
+
+        return context
 
 
 class OrderDetails(LoginRequiredMixin, View):
