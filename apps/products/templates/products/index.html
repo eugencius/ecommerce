@@ -2,7 +2,15 @@
 {% load ecfilters %}
 {% load i18n %}
 
-{% block title %}Home | {% endblock title %}
+{% block title %}
+  
+  {% if seeing_category %}
+    {% translate "Products of category" %} "{{ category|translate_template }}"
+  {% else %}
+    {% translate "Home" %}
+  {% endif %} | 
+
+{% endblock title %}
 
 {% block content %}
 

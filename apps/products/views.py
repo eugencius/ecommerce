@@ -9,7 +9,7 @@ from apps.favorites.models import FavoriteList
 from templates.static import messages as notifications
 from utils import create_cart, insert_new_pagination
 
-from .models import Product
+from .models import Category, Product
 
 PER_PAGE = 9
 
@@ -23,12 +23,27 @@ class Index(ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.order_by("-id").filter(is_published=True)
+
+        category = self.request.GET.get("category")
+
+        if category:
+            is_existent = Category.objects.filter(name=category).exists()
+
+            if not is_existent:
+                raise Http404()
+
+            qs = qs.filter(category__name__iexact=category)
+
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        category = self.request.GET.get("category", None)
+
         context["light_nav"] = True
+        context["category"] = category
+        context["seeing_category"] = True if category else False
         insert_new_pagination(context=context, request=self.request, qty_pages=6)
 
         return context

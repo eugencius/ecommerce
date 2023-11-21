@@ -18,7 +18,11 @@
         />
       </div>
       <div class="col-md-6">
-        <div class="small mb-1">{% translate "Category" %}: {{ product.category.name|translate_template }}</div>
+        <div class="small mb-1">{% translate "Category" %}: 
+          <a href="{% url "products:index" %}?category={{ product.category.name }}">
+            {{ product.category.name|translate_template }}
+          </a>
+        </div>
         <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
         <div class="fs-5 mb-5">
           {% if product.promotional_price %}

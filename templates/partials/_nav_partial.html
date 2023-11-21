@@ -28,7 +28,15 @@
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">{% translate "Address informations" %}</a></li>
             </ul>
-          </li>
+        </li>
+        {% if not light_nav %}
+            <li style="color: white" class="nav-item vr"></li>
+        {% else %}
+            <li class="nav-item vr"></li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "products:index" %}?category=T-Shirt">{% translate "T-Shirt" %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url "products:index" %}?category=Cellphone">{% translate "Cellphone" %}</a></li>
     </ul>
 
 
