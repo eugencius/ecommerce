@@ -9,7 +9,7 @@ Here is a list of what is presented in the project:
 
 - Customize default Django authentication - Remove username and use e-mail instead.
 - Using django-allauth for allowing users to log in with social accounts, such as Google and Github.
-- Lists to save products that you liked (Coming soon)
+- Save products that you've liked in lists
 - Payment gateway with PayPal (Coming soon)
 
 This list of features will be updated as the project progresses.
