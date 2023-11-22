@@ -6,7 +6,7 @@ coverage==7.3.2
 crispy-bootstrap5==0.7
 cryptography==41.0.4
 defusedxml==0.7.1
-Django==4.2.5
+Django==4.2.7
 django-allauth==0.57.0
 django-crispy-forms==2.1
 django-debug-toolbar==4.2.0
